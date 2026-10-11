@@ -63,6 +63,7 @@ summary { cursor:pointer; list-style-position:inside; }
 .av.sm { width:32px; height:32px; font-size:.8rem; }
 .who { display:flex; flex-direction:column; }
 .who small { opacity:.75; }
+.bio { white-space:pre-line; }
 .portrait { width:100%; max-width:260px; aspect-ratio:1; border-radius:16px; background:var(--moss); color:var(--sand); display:flex; align-items:center; justify-content:center; font-size:3rem; margin:4px 0 12px; }
 .crew { list-style:none; padding:0; }
 .crew li { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(43,58,36,.15); }
@@ -235,11 +236,11 @@ monthsBox.addEventListener("click", e => {
 renderTimeline();
 // ---- Staff data: Tier 1 executives (accordion) and Tier 2 field crew (compact list) ----
 const EXECS = [
-  {name:"Dillon Nyimbili",role:"General Administration & Water",bio:"Biography to be added."},
-  {name:"Davison Muzumara",role:"Operations",bio:"Biography to be added."},
-  {name:"Alichimfya Makangila",role:"Crop Administrator",bio:"Biography to be added."},
-  {name:"Musonda Kaputo",role:"Equipment",bio:"Biography to be added."},
-  {name:"Ruth Beremauro",role:"HR",bio:"Biography to be added."},
+  {name:"Dillon Nyimbili",role:"General Administration & Water",bio:"General Administrator - Responsible for overall coordination of farm trips - budget coordination, overseeing all farm departments.\n\nWater supply manager - Responsible for coordinating water usage and storage, irrigation system installation and maintenance and training of the whole team on appropriate usage and management of water facilities."},
+  {name:"Davison Muzumara",role:"Operations",bio:"Operations manager - Responsible for weekly and daily planning of target activities. Monitoring progress and improving daily output; i.e. coordinating all daily farm activities."},
+  {name:"Alichimfya Makangila",role:"Crop Administrator",bio:"Crop Administrator - Responsible for creating, reviewing and sharing of crop growth calendars, schedules and expectations, including monitoring of crop growth and guidance for the team on crop requirements at various growth stages."},
+  {name:"Musonda Kaputo",role:"Equipment",bio:"Equipment manager - Responsible for monitoring and recording quantities and state of all equipment, ensuring good care and storage and coordinating purchasing, maintenance and replacement of all farm equipment."},
+  {name:"Ruth Beremauro",role:"HR",bio:"Human Resource Manager - Responsible for coordinating all staff(KRC officers and farm employees), team building, role assigning, facilitating training and conflict resolution. Responsible for reinforcing KRC vision, team motivation and attending to individual human resource concerns."},
   {name:"Kasonde Makangila",role:"Senior Lead Supervisor",bio:"Biography to be added."},
   {name:"Your Name",role:"Lead Systems Architect & Digital Project Director",bio:"Biography to be added."}
 ];
