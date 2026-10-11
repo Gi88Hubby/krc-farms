@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KRC Farms</title>
+<style>
+:root { --moss:#2B3A24; --sand:#EDE6D3; --beige:#DDD2B6; --deep:#222E1D; --panel:#35462D; }
+* { box-sizing:border-box; margin:0; }
+[hidden] { display:none !important; }
+html { scroll-behavior:smooth; }
+body { font-family:Georgia,"Times New Roman",serif; background:var(--moss); color:var(--sand); line-height:1.6; }
+.bg { position:fixed; inset:0; z-index:-1; background:linear-gradient(160deg,#3d5232,#1c2817); }
+.bg video { width:100%; height:100%; object-fit:cover; display:block; }
+.bg::after { content:""; position:absolute; inset:0; background:var(--moss); opacity:.4; }
+header { position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; padding:12px 18px; background:rgba(43,58,36,.88); backdrop-filter:blur(6px); }
+.brand { font-size:1.3rem; font-weight:bold; letter-spacing:.5px; }
+nav { display:flex; gap:16px; font-size:.95rem; }
+nav a { color:var(--sand); text-decoration:none; opacity:.85; }
+nav a:hover { opacity:1; text-decoration:underline; }
+.toggle { display:flex; align-items:center; gap:8px; font-size:.8rem; cursor:pointer; }
+.toggle input { display:none; }
+.switch { width:38px; height:20px; border-radius:20px; background:#6b7a63; position:relative; transition:.2s; }
+.switch::after { content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:var(--sand); transition:.2s; }
+.toggle input:checked + .switch { background:#9bbf6a; }
+.toggle input:checked + .switch::after { left:20px; }
+.hero { min-height:75vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 20px; }
+.hero h1 { font-size:clamp(2.2rem,8vw,4.2rem); line-height:1.1; max-width:14em; }
+.hero p { margin-top:16px; max-width:34em; font-size:1.1rem; opacity:.92; }
+main { background:var(--deep); color:var(--sand); min-height:50vh; padding:40px 20px; border-radius:24px 24px 0 0; }
+main section { max-width:900px; margin:0 auto 20px; padding:24px; border-radius:16px; background:var(--panel); color:var(--sand); }
+main section:nth-child(even) { background:var(--beige); color:var(--moss); }
+main h2 { font-size:1.6rem; margin-bottom:8px; }
+.editing [data-key] { outline:1px dashed #9bbf6a; outline-offset:3px; }
+.editing [data-key]:focus { outline:2px solid #9bbf6a; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <div class="brand" data-key="brand">KRC Farms</div>
+  <nav>
+    <a href="#timeline" data-key="nav1">Timeline</a>
+    <a href="#team" data-key="nav2">Team</a>
+    <a href="#contact" data-key="nav3">Contact</a>
+  </nav>
+  <button id="export" hidden style="padding:4px 10px;border-radius:8px;border:1px solid #9bbf6a;background:none;color:inherit;font:inherit;font-size:.8rem">Export</button>
+  <label class="toggle" id="adminToggle" hidden>
+    <span>Edit Mode</span>
+    <input type="checkbox" id="edit">
+    <span class="switch"></span>
+  </label>
+</header>
+
+<div class="hero">
+  <h1 data-key="title">Growing something real, season by season</h1>
+  <p data-key="intro">Follow the story of KRC Farms, from the first survey walk to the first harvest.</p>
+</div>
+
+<main id="content">
+  <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><p>Coming in the next step.</p></section>
+  <section id="team"><h2 data-key="h-team">Our Team</h2><p>Coming in the next step.</p></section>
+  <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
+</main>
+
+<script>
+// Paste a direct link to an .mp4 video between the quotes to enable the video background.
+const VIDEO_URL = "";
+
+const bg = document.querySelector(".bg");
+if (VIDEO_URL) {
+  const v = document.createElement("video");
+  v.src = VIDEO_URL; v.autoplay = true; v.loop = true; v.muted = true; v.playsInline = true;
+  bg.prepend(v);
+}
+
+const fields = document.querySelectorAll("[data-key]");
+const isAdmin = location.hash === "#admin";
+let content = {}, draft = {};
+try { draft = JSON.parse(localStorage.getItem("krc-draft") || "{}"); } catch (e) {}
+fetch("content.json", { cache: "no-store" })
+  .then(r => r.ok ? r.json() : {}).catch(() => ({}))
+  .then(d => {
+    content = d;
+    if (isAdmin) Object.assign(content, draft);
+    fields.forEach(el => { if (content[el.dataset.key]) el.textContent = content[el.dataset.key]; });
+  });
+if (isAdmin) {
+  document.getElementById("adminToggle").hidden = false;
+  document.getElementById("export").hidden = false;
+}
+fields.forEach(el => el.addEventListener("input", () => {
+  content[el.dataset.key] = el.textContent;
+  try { localStorage.setItem("krc-draft", JSON.stringify(content)); } catch (e) {}
+}));
+document.getElementById("export").addEventListener("click", () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(content, null, 2)], { type: "application/json" }));
+  a.download = "content.json";
+  a.click();
+});
+
+let editing = false;
+document.getElementById("edit").addEventListener("change", e => {
+  editing = e.target.checked;
+  document.body.classList.toggle("editing", editing);
+  fields.forEach(el => el.contentEditable = editing);
+});
+document.querySelectorAll("nav a").forEach(a =>
+  a.addEventListener("click", e => { if (editing) e.preventDefault(); })
+);
+</script>
+</body>
+</html>
