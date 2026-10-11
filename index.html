@@ -46,6 +46,28 @@ summary { cursor:pointer; list-style-position:inside; }
 .imgs img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; }
 .imgs .none { opacity:.6; font-size:.85rem; grid-column:1/-1; }
 .empty { padding:0 16px 14px; opacity:.7; }
+.adm { display:none; }
+.editing .adm { display:block; }
+.adm input, .adm textarea { width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #9bbf6a; background:rgba(0,0,0,.25); color:inherit; font:inherit; }
+.adm button { margin-top:8px; padding:8px 14px; border-radius:8px; border:1px solid #9bbf6a; background:none; color:inherit; font:inherit; cursor:pointer; }
+.addrow { padding:0 10px 12px; }
+.date:empty { display:none; }
+#staff h3 { margin:18px 0 8px; font-size:1.1rem; }
+.card { background:rgba(43,58,36,.09); margin-top:8px; }
+.card > summary { display:flex; align-items:center; gap:12px; padding:12px; list-style:none; }
+.card > summary::-webkit-details-marker { display:none; }
+.card > summary::after { content:"\25BE"; margin-left:auto; }
+.card[open] > summary::after { content:"\25B4"; }
+.card .body { padding:0 12px 14px; }
+.av { flex:none; width:44px; height:44px; border-radius:50%; background:var(--moss); color:var(--sand); display:inline-flex; align-items:center; justify-content:center; font-weight:bold; }
+.av.sm { width:32px; height:32px; font-size:.8rem; }
+.who { display:flex; flex-direction:column; }
+.who small { opacity:.75; }
+.portrait { width:100%; max-width:260px; aspect-ratio:1; border-radius:16px; background:var(--moss); color:var(--sand); display:flex; align-items:center; justify-content:center; font-size:3rem; margin:4px 0 12px; }
+.crew { list-style:none; padding:0; }
+.crew li { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(43,58,36,.15); }
+.crew .adm { width:100%; }
+#team .adm input, #team .adm textarea { background:rgba(255,255,255,.55); }
 </style>
 </head>
 <body>
@@ -73,7 +95,7 @@ summary { cursor:pointer; list-style-position:inside; }
 
 <main id="content">
   <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
-  <section id="team"><h2 data-key="h-team">Our Team</h2><p>Coming in the next step.</p></section>
+  <section id="team"><h2 data-key="h-team">Our Team</h2><div id="staff"></div></section>
   <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
 </main>
 
@@ -98,6 +120,10 @@ fetch("content.json", { cache: "no-store" })
     content = d;
     if (isAdmin) Object.assign(content, draft);
     fields.forEach(el => { if (content[el.dataset.key]) el.textContent = content[el.dataset.key]; });
+    if (Array.isArray(content.milestones)) milestones = content.milestones;
+    if (Array.isArray(content.execs)) execs = content.execs;
+    if (Array.isArray(content.crew)) crew = content.crew;
+    renderTimeline(); renderStaff();
   });
 if (isAdmin) {
   document.getElementById("adminToggle").hidden = false;
@@ -108,6 +134,7 @@ fields.forEach(el => el.addEventListener("input", () => {
   try { localStorage.setItem("krc-draft", JSON.stringify(content)); } catch (e) {}
 }));
 document.getElementById("export").addEventListener("click", () => {
+  content.milestones = milestones; content.execs = execs; content.crew = crew;
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(content, null, 2)], { type: "application/json" }));
   a.download = "content.json";
@@ -151,18 +178,125 @@ const MILESTONES = [
   {month:"nov",date:"",title:"Pending",text:"Entries to be added.",images:[]},
   {month:"dec",date:"",title:"Pending",text:"Entries to be added.",images:[]}
 ];
-function renderTimeline() {
-  const box = document.getElementById("months");
-  box.innerHTML = MONTHS.slice().sort((a, b) => a.order - b.order).map(m => {
-    const items = MILESTONES.filter(x => x.month === m.id).map(x => `
-      <details class="ms"><summary>${x.date ? `<span class="date">${x.date}</span>` : ""}${x.title}</summary>
-        <div class="body"><p>${x.text}</p>
-          <div class="imgs">${x.images.length ? x.images.map(i => `<img src="${i}" alt="">`).join("") : '<span class="none">No photos yet</span>'}</div>
-        </div></details>`).join("");
-    return `<details class="month"${m.id === "sep" ? " open" : ""}><summary>${m.name}</summary>${items}</details>`;
+let milestones = MILESTONES;
+const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function saveDraft() {
+  content.milestones = milestones; content.execs = execs; content.crew = crew;
+  try { localStorage.setItem("krc-draft", JSON.stringify(content)); } catch (e) {}
+}
+function renderTimeline(openMonths, openMs) {
+  openMonths = openMonths || ["sep"]; openMs = openMs || [];
+  document.getElementById("months").innerHTML = MONTHS.slice().sort((a, b) => a.order - b.order).map(m => {
+    const items = milestones.map((x, i) => ({x, i})).filter(o => o.x.month === m.id).map(({x, i}) => `
+      <details class="ms"${openMs.includes(i) ? " open" : ""}><summary><span class="date">${esc(x.date)}</span><span class="t">${esc(x.title)}</span></summary>
+        <div class="body"><p class="txt">${esc(x.text)}</p>
+          <div class="imgs">${(x.images || []).length ? x.images.map(p => `<img src="${p}" alt="">`).join("") : '<span class="none">No photos yet</span>'}</div>
+          <div class="adm">
+            <input data-i="${i}" data-f="date" placeholder="Date (e.g. April 12)" value="${esc(x.date)}">
+            <input data-i="${i}" data-f="title" placeholder="Title" value="${esc(x.title)}">
+            <textarea data-i="${i}" data-f="text" rows="3" placeholder="What happened?">${esc(x.text)}</textarea>
+            <button data-del="${i}">Delete event</button>
+          </div></div></details>`).join("");
+    return `<details class="month" data-m="${m.id}"${openMonths.includes(m.id) ? " open" : ""}><summary>${m.name}</summary>${items}<div class="adm addrow"><button data-add="${m.id}">+ Add event</button></div></details>`;
   }).join("");
 }
+const monthsBox = document.getElementById("months");
+function openState() {
+  return {
+    m: [...monthsBox.querySelectorAll("details.month[open]")].map(d => d.dataset.m),
+    s: [...monthsBox.querySelectorAll("details.ms[open]")].map(d => +d.querySelector("[data-i]").dataset.i)
+  };
+}
+monthsBox.addEventListener("input", e => {
+  const t = e.target, i = t.dataset.i;
+  if (i === undefined) return;
+  milestones[i][t.dataset.f] = t.value;
+  const d = t.closest("details");
+  d.querySelector(".date").textContent = milestones[i].date;
+  d.querySelector(".t").textContent = milestones[i].title;
+  d.querySelector(".txt").textContent = milestones[i].text;
+  saveDraft();
+});
+monthsBox.addEventListener("click", e => {
+  const add = e.target.dataset.add, del = e.target.dataset.del;
+  if (add) {
+    const st = openState();
+    milestones.push({month: add, date: "", title: "New event", text: "", images: []});
+    saveDraft();
+    renderTimeline(st.m.concat(add), st.s.concat(milestones.length - 1));
+  } else if (del !== undefined) {
+    if (!confirm("Delete this event?")) return;
+    const st = openState();
+    milestones.splice(+del, 1);
+    saveDraft();
+    renderTimeline(st.m, []);
+  }
+});
 renderTimeline();
+// ---- Staff data: Tier 1 executives (accordion) and Tier 2 field crew (compact list) ----
+const EXECS = [
+  {name:"Dillon Nyimbili",role:"General Administration & Water",bio:"Biography to be added."},
+  {name:"Davison Muzumara",role:"Operations",bio:"Biography to be added."},
+  {name:"Alichimfya Makangila",role:"Crop Administrator",bio:"Biography to be added."},
+  {name:"Musonda Kaputo",role:"Equipment",bio:"Biography to be added."},
+  {name:"Ruth Beremauro",role:"HR",bio:"Biography to be added."},
+  {name:"Kasonde Makangila",role:"Senior Lead Supervisor",bio:"Biography to be added."},
+  {name:"Your Name",role:"Lead Systems Architect & Digital Project Director",bio:"Biography to be added."}
+];
+const CREW = [
+  {name:"Bento Chityamba",role:"The Transporter (Driver)"},
+  {name:"Martin Kamfwa Shi Mutale",role:"The Caretaker"},
+  {name:"Casius Mweemba",role:"Field Worker"},
+  {name:"John Jongolosi",role:"Field Worker"},
+  {name:"Roida Katongo",role:"Field Worker"},
+  {name:"Nekson Mubita",role:"Field Worker"},
+  {name:"Maybin Musanya",role:"Field Worker"},
+  {name:"John Shabwande",role:"Field Worker"}
+];
+let execs = EXECS, crew = CREW;
+const ini = n => n.split(/\s+/).filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase() || "?";
+const staffLists = () => ({execs, crew});
+function renderStaff() {
+  const form = (l, i, p, bio) => `<div class="adm">
+    <input data-l="${l}" data-i="${i}" data-f="name" placeholder="Name" value="${esc(p.name)}">
+    <input data-l="${l}" data-i="${i}" data-f="role" placeholder="Role" value="${esc(p.role)}">
+    ${bio ? `<textarea data-l="${l}" data-i="${i}" data-f="bio" rows="4" placeholder="Biography">${esc(p.bio || "")}</textarea>` : ""}
+    <button data-dl="${l}" data-di="${i}">Remove</button></div>`;
+  document.getElementById("staff").innerHTML = `
+    <h3>Executive Management</h3>
+    ${execs.map((p, i) => `<details class="card" name="exec"><summary><span class="av">${esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span></summary>
+      <div class="body"><div class="portrait">${esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
+    <div class="adm"><button data-addl="execs">+ Add executive</button></div>
+    <h3>Field Operations &amp; Farm Crew</h3>
+    <ul class="crew">${crew.map((p, i) => `<li><span class="av sm">${esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <div class="adm"><button data-addl="crew">+ Add crew member</button></div>`;
+}
+const staffBox = document.getElementById("staff");
+staffBox.addEventListener("input", e => {
+  const t = e.target, l = t.dataset.l;
+  if (!l) return;
+  const p = staffLists()[l][t.dataset.i];
+  p[t.dataset.f] = t.value;
+  const row = t.closest("details, li");
+  row.querySelector(".n").textContent = p.name;
+  row.querySelector(".r").textContent = p.role;
+  row.querySelectorAll(".av, .portrait").forEach(a => a.textContent = ini(p.name));
+  const b = row.querySelector(".bio"); if (b) b.textContent = p.bio || "";
+  saveDraft();
+});
+staffBox.addEventListener("click", e => {
+  const add = e.target.dataset.addl, dl = e.target.dataset.dl;
+  if (add) {
+    staffLists()[add].push(add === "execs" ? {name:"New member",role:"",bio:""} : {name:"New member",role:""});
+    saveDraft(); renderStaff();
+    if (add === "execs") { const c = staffBox.querySelectorAll("details.card"); c[c.length - 1].open = true; }
+  } else if (dl) {
+    if (!confirm("Remove this person?")) return;
+    staffLists()[dl].splice(+e.target.dataset.di, 1);
+    saveDraft(); renderStaff();
+  }
+});
+renderStaff();
 </script>
 </body>
 </html>
