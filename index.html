@@ -33,6 +33,19 @@ main section:nth-child(even) { background:var(--beige); color:var(--moss); }
 main h2 { font-size:1.6rem; margin-bottom:8px; }
 .editing [data-key] { outline:1px dashed #9bbf6a; outline-offset:3px; }
 .editing [data-key]:focus { outline:2px solid #9bbf6a; }
+
+details { border-radius:12px; margin-top:10px; }
+.month { background:rgba(255,255,255,.07); }
+.month > summary { font-size:1.2rem; font-weight:bold; padding:14px 16px; }
+.ms { background:rgba(0,0,0,.2); margin:8px 10px; }
+.ms > summary { padding:10px 14px; }
+summary { cursor:pointer; list-style-position:inside; }
+.ms .body { padding:0 14px 14px; }
+.date { opacity:.75; font-size:.85rem; margin-right:8px; }
+.imgs { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:8px; margin-top:10px; }
+.imgs img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; }
+.imgs .none { opacity:.6; font-size:.85rem; grid-column:1/-1; }
+.empty { padding:0 16px 14px; opacity:.7; }
 </style>
 </head>
 <body>
@@ -59,7 +72,7 @@ main h2 { font-size:1.6rem; margin-bottom:8px; }
 </div>
 
 <main id="content">
-  <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><p>Coming in the next step.</p></section>
+  <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
   <section id="team"><h2 data-key="h-team">Our Team</h2><p>Coming in the next step.</p></section>
   <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
 </main>
@@ -110,6 +123,46 @@ document.getElementById("edit").addEventListener("change", e => {
 document.querySelectorAll("nav a").forEach(a =>
   a.addEventListener("click", e => { if (editing) e.preventDefault(); })
 );
+
+// ---- Timeline data (Months -> Milestones -> Images). Strict order: February (1) to December (11). ----
+const MONTHS = [
+  {id:"feb",name:"February",order:1},{id:"mar",name:"March",order:2},{id:"apr",name:"April",order:3},
+  {id:"may",name:"May",order:4},{id:"jun",name:"June",order:5},{id:"jul",name:"July",order:6},
+  {id:"aug",name:"August",order:7},{id:"sep",name:"September",order:8},{id:"oct",name:"October",order:9},
+  {id:"nov",name:"November",order:10},{id:"dec",name:"December",order:11}
+];
+const MILESTONES = [
+  {month:"feb",date:"",title:"Property acquired",text:"Official property acquisition and initial topographical survey walk.",images:[]},
+  {month:"mar",date:"",title:"Land clearing",text:"Land clearing and physical boundary demarcation.",images:[]},
+  {month:"apr",date:"",title:"Irrigation delivery",text:"Delivery of irrigation pipes and water management equipment.",images:[]},
+  {month:"may",date:"",title:"Land tillage",text:"Heavy land tillage and primary bed preparation.",images:[]},
+  {month:"jun",date:"June 10",title:"Vehicle accident",text:"Minor vehicle accident involving the blue Hilux near Crossroads Mall during commute.",images:[]},
+  {month:"jun",date:"June 10",title:"KRC meeting",text:"KRC meeting on crop selection, livestock locations, and manager roles.",images:[]},
+  {month:"jun",date:"June 16",title:"New crew member",text:"John Shabwande joined the farm crew.",images:[]},
+  {month:"jun",date:"June 21",title:"Planting begins",text:"Bed preparations finalized; planting initiated for summer crops (okra, green beans, carrots, and onions).",images:[]},
+  {month:"jul",date:"",title:"Daily operations",text:"Daily farm operations focusing on routine watering, weeding, and growth monitoring.",images:[]},
+  {month:"aug",date:"",title:"Borehole pipe extended",text:"Successful extension of the main borehole pipe to secure a reliable water supply.",images:[]},
+  {month:"sep",date:"Sept 9",title:"Beds labeled",text:"Physical labeling of all growing beds completed.",images:[]},
+  {month:"sep",date:"Sept 18",title:"103 chili beds",text:"Finished constructing and preparing 103 chili beds.",images:[]},
+  {month:"sep",date:"Sept 21",title:"Spraying: beans and okra",text:"Green beans sprayed with Lara-max; okra sprayed with Cyper-max.",images:[]},
+  {month:"sep",date:"Sept 24",title:"Spraying: onions",text:"Onions sprayed with Colam Super.",images:[]},
+  {month:"sep",date:"Ongoing",title:"Lettuce harvest",text:"Lettuce harvest half done / half in progress; sold first self-produced sample of 20 healthy lettuce heads.",images:[]},
+  {month:"oct",date:"",title:"Pending",text:"Entries to be added.",images:[]},
+  {month:"nov",date:"",title:"Pending",text:"Entries to be added.",images:[]},
+  {month:"dec",date:"",title:"Pending",text:"Entries to be added.",images:[]}
+];
+function renderTimeline() {
+  const box = document.getElementById("months");
+  box.innerHTML = MONTHS.slice().sort((a, b) => a.order - b.order).map(m => {
+    const items = MILESTONES.filter(x => x.month === m.id).map(x => `
+      <details class="ms"><summary>${x.date ? `<span class="date">${x.date}</span>` : ""}${x.title}</summary>
+        <div class="body"><p>${x.text}</p>
+          <div class="imgs">${x.images.length ? x.images.map(i => `<img src="${i}" alt="">`).join("") : '<span class="none">No photos yet</span>'}</div>
+        </div></details>`).join("");
+    return `<details class="month"${m.id === "sep" ? " open" : ""}><summary>${m.name}</summary>${items}</details>`;
+  }).join("");
+}
+renderTimeline();
 </script>
 </body>
 </html>
