@@ -29,7 +29,7 @@ nav a:hover { opacity:1; text-decoration:underline; }
 .hero p { margin-top:16px; max-width:34em; font-size:1.1rem; opacity:.92; }
 main { background:var(--deep); color:var(--sand); min-height:50vh; padding:40px 20px; border-radius:24px 24px 0 0; }
 main section { max-width:900px; margin:0 auto 20px; padding:24px; border-radius:16px; background:var(--panel); color:var(--sand); }
-main section:nth-child(even) { background:var(--beige); color:var(--moss); }
+main section:nth-of-type(even) { background:var(--beige); color:var(--moss); }
 main h2 { font-size:1.6rem; margin-bottom:8px; }
 .editing [data-key] { outline:1px dashed #9bbf6a; outline-offset:3px; }
 .editing [data-key]:focus { outline:2px solid #9bbf6a; }
@@ -64,11 +64,17 @@ summary { cursor:pointer; list-style-position:inside; }
 .who { display:flex; flex-direction:column; }
 .who small { opacity:.75; }
 .bio { white-space:pre-line; }
-.portrait { width:100%; max-width:260px; aspect-ratio:1; border-radius:16px; background:var(--moss); color:var(--sand); display:flex; align-items:center; justify-content:center; font-size:3rem; margin:4px 0 12px; }
+.portrait { width:100%; max-width:420px; aspect-ratio:4/5; overflow:hidden; border-radius:16px; background:var(--moss); color:var(--sand); display:flex; align-items:center; justify-content:center; font-size:3rem; margin:4px auto 12px; }
 .crew { list-style:none; padding:0; }
 .crew li { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(43,58,36,.15); }
 .crew .adm { width:100%; }
 #team .adm input, #team .adm textarea { background:rgba(255,255,255,.55); }
+.portrait img, .av img { width:100%; height:100%; object-fit:cover; display:block; }
+.av { overflow:hidden; }
+.ph { position:relative; }
+.adm.x { position:absolute; top:4px; right:4px; margin:0; padding:2px 9px; }
+.editing .adm.x { display:block; }
+#auth .box { max-width:900px; margin:0 auto 20px; padding:16px; border-radius:16px; background:var(--panel); color:var(--sand); }
 </style>
 </head>
 <body>
@@ -95,6 +101,10 @@ summary { cursor:pointer; list-style-position:inside; }
 </div>
 
 <main id="content">
+  <div id="auth" class="adm"><div class="box"><b>Admin login</b><span id="authState"></span>
+    <input id="em" type="email" placeholder="Admin email" autocomplete="username">
+    <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="signin">Sign in</button> <button id="signout">Sign out</button></div></div>
   <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
   <section id="team"><h2 data-key="h-team">Our Team</h2><div id="staff"></div></section>
   <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
@@ -191,11 +201,12 @@ function renderTimeline(openMonths, openMs) {
     const items = milestones.map((x, i) => ({x, i})).filter(o => o.x.month === m.id).map(({x, i}) => `
       <details class="ms"${openMs.includes(i) ? " open" : ""}><summary><span class="date">${esc(x.date)}</span><span class="t">${esc(x.title)}</span></summary>
         <div class="body"><p class="txt">${esc(x.text)}</p>
-          <div class="imgs">${(x.images || []).length ? x.images.map(p => `<img src="${p}" alt="">`).join("") : '<span class="none">No photos yet</span>'}</div>
+          <div class="imgs">${(x.images || []).length ? x.images.map((p, j) => `<span class="ph"><img src="${p}" loading="lazy" alt=""><button class="adm x" data-rm="${i}:${j}">&times;</button></span>`).join("") : '<span class="none">No photos yet</span>'}</div>
           <div class="adm">
             <input data-i="${i}" data-f="date" placeholder="Date (e.g. April 12)" value="${esc(x.date)}">
             <input data-i="${i}" data-f="title" placeholder="Title" value="${esc(x.title)}">
             <textarea data-i="${i}" data-f="text" rows="3" placeholder="What happened?">${esc(x.text)}</textarea>
+            <label>Add photos<input type="file" accept="image/jpeg,image/png,image/webp" multiple data-up="${i}"></label>
             <button data-del="${i}">Delete event</button>
           </div></div></details>`).join("");
     return `<details class="month" data-m="${m.id}"${openMonths.includes(m.id) ? " open" : ""}><summary>${m.name}</summary>${items}<div class="adm addrow"><button data-add="${m.id}">+ Add event</button></div></details>`;
@@ -262,14 +273,15 @@ function renderStaff() {
     <input data-l="${l}" data-i="${i}" data-f="name" placeholder="Name" value="${esc(p.name)}">
     <input data-l="${l}" data-i="${i}" data-f="role" placeholder="Role" value="${esc(p.role)}">
     ${bio ? `<textarea data-l="${l}" data-i="${i}" data-f="bio" rows="4" placeholder="Biography">${esc(p.bio || "")}</textarea>` : ""}
+    <label>${l === "execs" ? "Portrait (full-quality JPEG)" : "Photo"}<input type="file" accept="image/jpeg,image/png" data-pl="${l}" data-port="${i}"></label>
     <button data-dl="${l}" data-di="${i}">Remove</button></div>`;
   document.getElementById("staff").innerHTML = `
     <h3>Executive Management</h3>
-    ${execs.map((p, i) => `<details class="card" name="exec"><summary><span class="av">${esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span></summary>
-      <div class="body"><div class="portrait">${esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
+    ${execs.map((p, i) => `<details class="card" name="exec"><summary><span class="av">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span></summary>
+      <div class="body"><div class="portrait">${p.photo ? `<img src="${p.photo}" loading="lazy" alt="">` : esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
     <div class="adm"><button data-addl="execs">+ Add executive</button></div>
     <h3>Field Operations &amp; Farm Crew</h3>
-    <ul class="crew">${crew.map((p, i) => `<li><span class="av sm">${esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <ul class="crew">${crew.map((p, i) => `<li><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <div class="adm"><button data-addl="crew">+ Add crew member</button></div>`;
 }
 const staffBox = document.getElementById("staff");
@@ -281,7 +293,7 @@ staffBox.addEventListener("input", e => {
   const row = t.closest("details, li");
   row.querySelector(".n").textContent = p.name;
   row.querySelector(".r").textContent = p.role;
-  row.querySelectorAll(".av, .portrait").forEach(a => a.textContent = ini(p.name));
+  if (!p.photo && !p.thumb) row.querySelectorAll(".av, .portrait").forEach(a => a.textContent = ini(p.name));
   const b = row.querySelector(".bio"); if (b) b.textContent = p.bio || "";
   saveDraft();
 });
@@ -298,6 +310,91 @@ staffBox.addEventListener("click", e => {
   }
 });
 renderStaff();
+// ---- Photos: Supabase storage (public viewing, admin-only uploads) ----
+const SB = "https://niboqoycmrhrtdoldgdr.supabase.co";
+const KEY = "sb_publishable_QdOfKiniiQqcevVaOv5dsw_yq_g8nI9";
+let token = "";
+try { token = sessionStorage.getItem("krc-token") || ""; } catch (e) {}
+const showAuth = () => { document.getElementById("authState").textContent = token ? " - signed in" : " - not signed in"; };
+async function login(email, pw) {
+  const r = await fetch(SB + "/auth/v1/token?grant_type=password", {method:"POST", headers:{apikey:KEY, "Content-Type":"application/json"}, body:JSON.stringify({email, password:pw})});
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.msg || d.error_description || "Login failed");
+  token = d.access_token;
+  try { sessionStorage.setItem("krc-token", token); } catch (e) {}
+}
+async function upload(path, blob, type) {
+  const r = await fetch(SB + "/storage/v1/object/farm-photos/" + path, {method:"POST", headers:{apikey:KEY, Authorization:"Bearer " + token, "Content-Type":type, "x-upsert":"false"}, body:blob});
+  if (!r.ok) {
+    const d = await r.json().catch(() => ({}));
+    throw new Error(r.status === 401 || r.status === 403 ? "Please sign in again (Admin login at the top)." : (d.message || "Upload failed (" + r.status + ")"));
+  }
+  return SB + "/storage/v1/object/public/farm-photos/" + path;
+}
+function toJpeg(file, max, q) {
+  return new Promise((res, rej) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u);
+      c.toBlob(b => b ? res(b) : rej(new Error("Could not process this image.")), "image/jpeg", q);
+    };
+    img.onerror = () => rej(new Error("Cannot read this image. HEIC files must be converted to JPEG first."));
+    img.src = u;
+  });
+}
+const rid = () => Date.now() + "-" + Math.random().toString(36).slice(2, 7);
+document.getElementById("signin").onclick = async () => {
+  try { await login(document.getElementById("em").value, document.getElementById("pw").value); document.getElementById("pw").value = ""; }
+  catch (err) { alert(err.message); }
+  showAuth();
+};
+document.getElementById("signout").onclick = () => { token = ""; try { sessionStorage.removeItem("krc-token"); } catch (e) {} showAuth(); };
+showAuth();
+
+monthsBox.addEventListener("change", async e => {
+  const t = e.target;
+  if (t.dataset.up === undefined) return;
+  const i = +t.dataset.up, files = [...t.files];
+  if (!files.length) return;
+  if (!token) { alert("Please sign in first (Admin login at the top)."); t.value = ""; return; }
+  const st = openState();
+  for (const f of files) {
+    try {
+      const b = await toJpeg(f, 1600, 0.82);
+      const url = await upload("timeline/" + rid() + ".jpg", b, "image/jpeg");
+      milestones[i].images = (milestones[i].images || []).concat(url);
+    } catch (err) { alert(f.name + ": " + err.message); }
+  }
+  saveDraft();
+  renderTimeline(st.m, st.s.concat(i));
+});
+monthsBox.addEventListener("click", e => {
+  const rm = e.target.dataset.rm;
+  if (rm === undefined) return;
+  const [i, j] = rm.split(":").map(Number), st = openState();
+  milestones[i].images.splice(j, 1);
+  saveDraft();
+  renderTimeline(st.m, st.s.concat(i));
+});
+staffBox.addEventListener("change", async e => {
+  const t = e.target;
+  if (t.dataset.port === undefined) return;
+  const l = t.dataset.pl, i = +t.dataset.port, f = t.files[0];
+  if (!f) return;
+  if (!token) { alert("Please sign in first (Admin login at the top)."); t.value = ""; return; }
+  if (/hei[cf]/i.test(f.type + f.name)) { alert("HEIC photos must be converted to JPEG first."); t.value = ""; return; }
+  try {
+    const thumb = await toJpeg(f, 256, 0.85), id = rid(), p = staffLists()[l][i];
+    if (l === "execs") p.photo = await upload("portraits/" + id + (f.type === "image/png" ? ".png" : ".jpg"), f, f.type || "image/jpeg");
+    p.thumb = await upload("portraits/" + id + "-thumb.jpg", thumb, "image/jpeg");
+    saveDraft(); renderStaff();
+    const row = staffBox.querySelectorAll(l === "execs" ? "details.card" : ".crew li")[i];
+    if (row && l === "execs") row.open = true;
+  } catch (err) { alert(err.message); }
+});
 </script>
 </body>
 </html>
