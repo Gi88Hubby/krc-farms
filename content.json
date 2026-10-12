@@ -1,1 +1,300 @@
-{}
+{
+  "milestones": [
+    {
+      "month": "feb",
+      "date": "",
+      "title": "Property acquired",
+      "text": "Official property acquisition and initial topographical survey walk.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828474150-i9o29.jpg"
+      ]
+    },
+    {
+      "month": "mar",
+      "date": "",
+      "title": "Land clearing",
+      "text": "Land clearing and physical boundary demarcation.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791826998565-0r987.jpg",
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828105158-sgnqm.jpg"
+      ]
+    },
+    {
+      "month": "apr",
+      "date": "",
+      "title": "Irrigation delivery",
+      "text": "Delivery of irrigation pipes and water management equipment.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828121556-hetqr.jpg",
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828522424-hmncv.jpg"
+      ]
+    },
+    {
+      "month": "may",
+      "date": "",
+      "title": "Land tillage",
+      "text": "Heavy land tillage and primary bed preparation.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828151402-fgwn3.jpg",
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791829840976-6bbpe.jpg"
+      ]
+    },
+    {
+      "month": "jun",
+      "date": "June 10",
+      "title": "Vehicle accident",
+      "text": "Minor vehicle accident involving the blue Hilux near Crossroads Mall during commute.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828171416-fu2n0.jpg"
+      ]
+    },
+    {
+      "month": "jun",
+      "date": "June 10",
+      "title": "KRC meeting",
+      "text": "KRC meeting on crop selection, livestock locations, and manager roles.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828239230-9honw.jpg"
+      ]
+    },
+    {
+      "month": "jun",
+      "date": "June 16",
+      "title": "New crew member",
+      "text": "John Shabwande joined the farm crew.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828250953-r6in5.jpg"
+      ]
+    },
+    {
+      "month": "jun",
+      "date": "June 21",
+      "title": "Planting begins",
+      "text": "Bed preparations finalized; planting initiated for summer crops (okra, green beans, carrots, and onions).",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828277449-7f3cg.jpg"
+      ]
+    },
+    {
+      "month": "jul",
+      "date": "",
+      "title": "Daily operations",
+      "text": "Daily farm operations focusing on routine watering, weeding, and growth monitoring.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828300787-21r3j.jpg"
+      ]
+    },
+    {
+      "month": "aug",
+      "date": "",
+      "title": "Borehole pipe extended",
+      "text": "Successful extension of the main borehole pipe to secure a reliable water supply.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828347343-6d9zo.jpg"
+      ]
+    },
+    {
+      "month": "sep",
+      "date": "Sept 9",
+      "title": "Beds labeled",
+      "text": "Physical labeling of all growing beds completed.",
+      "images": []
+    },
+    {
+      "month": "sep",
+      "date": "Sept 18",
+      "title": "103 chili beds",
+      "text": "Finished constructing and preparing 103 chili beds.",
+      "images": []
+    },
+    {
+      "month": "sep",
+      "date": "Sept 21",
+      "title": "Spraying: beans and okra",
+      "text": "Green beans sprayed with Lara-max; okra sprayed with Cyper-max.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828363432-e28c4.jpg"
+      ]
+    },
+    {
+      "month": "sep",
+      "date": "Sept 24",
+      "title": "Spraying: onions",
+      "text": "Onions sprayed with Colam Super.",
+      "images": []
+    },
+    {
+      "month": "sep",
+      "date": "Ongoing",
+      "title": "Lettuce harvest",
+      "text": "Lettuce harvest half done / half in progress; sold first self-produced sample of 20 healthy lettuce heads.",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828380931-twhtx.jpg"
+      ]
+    },
+    {
+      "month": "oct",
+      "date": "",
+      "title": "Pending",
+      "text": "Entries to be added.",
+      "images": []
+    },
+    {
+      "month": "nov",
+      "date": "",
+      "title": "Pending",
+      "text": "Entries to be added.",
+      "images": []
+    },
+    {
+      "month": "dec",
+      "date": "",
+      "title": "Pending",
+      "text": "Entries to be added.",
+      "images": []
+    },
+    {
+      "month": "feb",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791826953647-g8o1w.jpg"
+      ]
+    },
+    {
+      "month": "mar",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": []
+    },
+    {
+      "month": "apr",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": []
+    },
+    {
+      "month": "may",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": []
+    },
+    {
+      "month": "jun",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828320777-md9g8.jpg"
+      ]
+    },
+    {
+      "month": "sep",
+      "date": "",
+      "title": "New event",
+      "text": "",
+      "images": [
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828420376-3nsz7.jpg",
+        "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828423075-diqk0.jpg"
+      ]
+    }
+  ],
+  "execs": [
+    {
+      "name": "Dillon Nyimbili",
+      "role": "General Administration & Water",
+      "bio": "General Administrator - Responsible for overall coordination of farm trips - budget coordination, overseeing all farm departments.\n\nWater supply manager - Responsible for coordinating water usage and storage, irrigation system installation and maintenance and training of the whole team on appropriate usage and management of water facilities.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823607113-8lp30.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823607113-8lp30-thumb.jpg"
+    },
+    {
+      "name": "Davison Muzumara",
+      "role": "Operations",
+      "bio": "Operations manager - Responsible for weekly and daily planning of target activities. Monitoring progress and improving daily output; i.e. coordinating all daily farm activities.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823661078-1gt9l.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823661078-1gt9l-thumb.jpg"
+    },
+    {
+      "name": "Alichimfya Makangila",
+      "role": "Crop Administrator",
+      "bio": "Crop Administrator - Responsible for creating, reviewing and sharing of crop growth calendars, schedules and expectations, including monitoring of crop growth and guidance for the team on crop requirements at various growth stages.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823882252-mjxro.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823882252-mjxro-thumb.jpg"
+    },
+    {
+      "name": "Musonda Kaputo",
+      "role": "Equipment",
+      "bio": "Equipment manager - Responsible for monitoring and recording quantities and state of all equipment, ensuring good care and storage and coordinating purchasing, maintenance and replacement of all farm equipment.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791826611155-kqtvr.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791826611155-kqtvr-thumb.jpg"
+    },
+    {
+      "name": "Ruth Beremauro",
+      "role": "HR",
+      "bio": "Human Resource Manager - Responsible for coordinating all staff(KRC officers and farm employees), team building, role assigning, facilitating training and conflict resolution. Responsible for reinforcing KRC vision, team motivation and attending to individual human resource concerns.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823915358-5ekaj.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823915358-5ekaj-thumb.jpg"
+    },
+    {
+      "name": "Kasonde Makangila",
+      "role": "Senior Lead Supervisor",
+      "bio": "The heart of the operation.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823704725-dqp3s.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823704725-dqp3s-thumb.jpg"
+    },
+    {
+      "name": "Gibstar Makangila jr. ",
+      "role": "Lead Systems Architect & Digital Project Director",
+      "bio": ".Responsible for planning, building and maintaining KRC Farms' digital systems,  including extensive sustainable research\n the farm website and repository, its records, chronological timeline and photo storage,.  Ensures that information is organised, fact-based fact-checked vetted, secure and easy for the whole team to access.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791829750159-d7ypk.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791829750159-d7ypk-thumb.jpg"
+    },
+    {
+      "name": "Betty-Ryan Makangila ",
+      "role": "Records and coordination bursar.",
+      "bio": "Meeting Coordinator & Record Keeper - Responsible for scheduling and announcement of meetings, writing and sharing of minutes and coordinating weekly KRC meetings. Also responsible for keeping records of transactions and receipts for KRC-related expenses and purchases.",
+      "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791826788608-2u1rt.jpg",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791826788608-2u1rt-thumb.jpg"
+    }
+  ],
+  "crew": [
+    {
+      "name": "Bento Chityamba",
+      "role": "The Transporter ",
+      "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823558246-wob3d-thumb.jpg"
+    },
+    {
+      "name": "Martin Kamfwa Shi Mutale",
+      "role": "The Caretaker"
+    },
+    {
+      "name": "Casius Mweemba",
+      "role": "Field Worker"
+    },
+    {
+      "name": "John Jongolosi",
+      "role": "Field Worker"
+    },
+    {
+      "name": "Roida Katongo",
+      "role": "Field Worker"
+    },
+    {
+      "name": "Nekson Mubita",
+      "role": "Field Worker"
+    },
+    {
+      "name": "Maybin Musanya",
+      "role": "Field Worker"
+    },
+    {
+      "name": "John Shabwande",
+      "role": "Field Worker"
+    }
+  ],
+  "h-contact": "Contact : KRC Administration +260 97 3588733+260 97 7490470"
+}
