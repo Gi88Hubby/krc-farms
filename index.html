@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KRC Farms</title>
 <style>
-:root { --moss:#2B3A24; --sand:#EDE6D3; --beige:#DDD2B6; --deep:#222E1D; --panel:#35462D; }
+:root { --moss:#2B3A24; --sand:#EDE6D3; --beige:#DDD2B6; --deep:#222E1D; --panel:rgba(53,70,45,.85); }
 * { box-sizing:border-box; margin:0; }
 [hidden] { display:none !important; }
 html { scroll-behavior:smooth; }
-body { font-family:Georgia,"Times New Roman",serif; background:var(--moss); color:var(--sand); line-height:1.6; }
-.bg { position:fixed; inset:0; z-index:-1; background:linear-gradient(160deg,#3d5232,#1c2817); }
+body { font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--moss); color:var(--sand); line-height:1.6; }
+.bg { position:fixed; inset:0; z-index:-1; background:radial-gradient(circle at 20% 25%, rgba(155,191,106,.38), transparent 45%), radial-gradient(circle at 80% 62%, rgba(221,210,182,.24), transparent 50%), linear-gradient(160deg,#3d5232,#1c2817); animation:drift 22s ease-in-out infinite alternate; }
+@keyframes drift { from { background-size:100% 100%,100% 100%,100% 100%; } to { background-size:150% 150%,140% 140%,100% 100%; } }
 .bg video { width:100%; height:100%; object-fit:cover; display:block; }
-.bg::after { content:""; position:absolute; inset:0; background:var(--moss); opacity:.4; }
+.bg { overflow:hidden; }
+.bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(43,58,36,.55), rgba(43,58,36,.38) 45%, rgba(34,46,29,.88)); }
 header { position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; padding:12px 18px; background:rgba(43,58,36,.88); backdrop-filter:blur(6px); }
 .brand { font-size:1.3rem; font-weight:bold; letter-spacing:.5px; }
 nav { display:flex; gap:16px; font-size:.95rem; }
@@ -27,8 +29,8 @@ nav a:hover { opacity:1; text-decoration:underline; }
 .hero { min-height:75vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 20px; }
 .hero h1 { font-size:clamp(2.2rem,8vw,4.2rem); line-height:1.1; max-width:14em; }
 .hero p { margin-top:16px; max-width:34em; font-size:1.1rem; opacity:.92; }
-main { background:var(--deep); color:var(--sand); min-height:50vh; padding:40px 20px; border-radius:24px 24px 0 0; }
-main section { max-width:900px; margin:0 auto 20px; padding:24px; border-radius:16px; background:var(--panel); color:var(--sand); }
+main { background:rgba(34,46,29,.86); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); color:var(--sand); min-height:50vh; padding:40px 20px; border-radius:24px 24px 0 0; }
+main section { max-width:900px; margin:0 auto 28px; padding:32px 24px; border-radius:16px; background:var(--panel); color:var(--sand); }
 main section:nth-of-type(even) { background:var(--beige); color:var(--moss); }
 main h2 { font-size:1.6rem; margin-bottom:8px; }
 .editing [data-key] { outline:1px dashed #9bbf6a; outline-offset:3px; }
@@ -75,6 +77,33 @@ summary { cursor:pointer; list-style-position:inside; }
 .adm.x { position:absolute; top:4px; right:4px; margin:0; padding:2px 9px; }
 .editing .adm.x { display:block; }
 #auth .box { max-width:900px; margin:0 auto 20px; padding:16px; border-radius:16px; background:var(--panel); color:var(--sand); }
+.brand, h1, h2, h3 { font-family:Georgia,"Times New Roman",serif; }
+.hero h1 { letter-spacing:-.5px; }
+body { line-height:1.7; }
+.fade { opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+.fade.in { opacity:1; transform:none; }
+@keyframes drop { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+details[open] > :not(summary) { animation:drop .3s ease; }
+@media (prefers-reduced-motion:reduce) { .fade { opacity:1 !important; transform:none !important; transition:none; } details[open] > :not(summary) { animation:none; } }
+.imgs img, .portrait img { cursor:zoom-in; }
+.bar { display:none; position:fixed; bottom:0; left:0; right:0; z-index:20; background:rgba(43,58,36,.96); backdrop-filter:blur(6px); padding-bottom:env(safe-area-inset-bottom,0px); }
+.bar a { flex:1; text-align:center; padding:14px 0; color:var(--sand); text-decoration:none; font-size:.9rem; }
+@media (max-width:700px) { .bar { display:flex; } body { padding-bottom:58px; } body:not(.editing) header nav { display:none; } }
+#lb { position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.93); display:flex; align-items:center; justify-content:center; }
+#lb img { max-width:100%; max-height:100%; object-fit:contain; }
+#lb button { position:absolute; background:rgba(0,0,0,.45); color:#fff; border:0; font-size:2rem; padding:8px 16px; border-radius:10px; cursor:pointer; }
+#lbx { top:12px; right:12px; } #lbp { left:8px; top:50%; } #lbn { right:8px; top:50%; }
+.hero { position:relative; min-height:calc(100vh - 130px); }
+.glass { max-width:760px; padding:38px 26px; border-radius:26px; background:rgba(255,255,255,.14); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.32); box-shadow:0 20px 50px rgba(0,0,0,.28); }
+.eyebrow { display:inline-block; font-size:.9rem; font-weight:bold; letter-spacing:.2em; text-transform:uppercase; color:#cfe8a4; margin-bottom:14px; }
+.cta { display:inline-block; margin-top:24px; padding:13px 30px; border-radius:999px; background:#9bbf6a; color:#1d2918; font-weight:bold; text-decoration:none; }
+.cue { position:absolute; bottom:22px; left:50%; margin-left:-14px; color:var(--sand); text-decoration:none; font-size:1.6rem; animation:bob 2s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(8px); } }
+.bg video { opacity:0; transition:opacity 1.6s ease; animation:kb 32s ease-in-out infinite alternate; }
+.bg video.on { opacity:1; }
+@keyframes kb { from { transform:scale(1); } to { transform:scale(1.09); } }
+main h2::after { content:""; display:block; width:48px; height:3px; background:#9bbf6a; margin-top:8px; border-radius:3px; }
+@media (prefers-reduced-motion:reduce) { .cue, .bg, .bg video { animation:none; } }
 </style>
 </head>
 <body>
@@ -96,8 +125,13 @@ summary { cursor:pointer; list-style-position:inside; }
 </header>
 
 <div class="hero">
-  <h1 data-key="title">Growing something real, season by season</h1>
-  <p data-key="intro">Follow the story of KRC Farms, from the first survey walk to the first harvest.</p>
+  <div class="glass">
+    <span class="eyebrow" data-key="eyebrow">The farm diary</span>
+    <h1 data-key="title">Growing something real, season by season</h1>
+    <p data-key="intro">Follow the story of KRC Farms, from the first survey walk to the first harvest.</p>
+    <a class="cta" href="#timeline" data-key="cta">View the timeline</a>
+  </div>
+  <a class="cue" href="#timeline" aria-label="Scroll down">&#8595;</a>
 </div>
 
 <main id="content">
@@ -110,15 +144,19 @@ summary { cursor:pointer; list-style-position:inside; }
   <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
 </main>
 
+<div id="lb" hidden><button id="lbx">&times;</button><button id="lbp" class="nav">&#10094;</button><img alt=""><button id="lbn" class="nav">&#10095;</button></div>
+<nav class="bar"><a href="#timeline">Timeline</a><a href="#team">Team</a><a href="#contact">Contact</a></nav>
 <script>
-// Paste a direct link to an .mp4 video between the quotes to enable the video background.
-const VIDEO_URL = "";
+// Background video: upload a short file named hero.mp4 to the GitHub repo, and it shows automatically.
+const VIDEO_URL = "hero.mp4";
 
 const bg = document.querySelector(".bg");
-if (VIDEO_URL) {
+if (VIDEO_URL && !(navigator.connection && navigator.connection.saveData)) {
   const v = document.createElement("video");
   v.src = VIDEO_URL; v.autoplay = true; v.loop = true; v.muted = true; v.playsInline = true;
   bg.prepend(v);
+  v.addEventListener("canplay", () => v.classList.add("on"));
+  v.addEventListener("error", () => v.remove());
 }
 
 const fields = document.querySelectorAll("[data-key]");
@@ -253,6 +291,7 @@ const EXECS = [
   {name:"Musonda Kaputo",role:"Equipment",bio:"Equipment manager - Responsible for monitoring and recording quantities and state of all equipment, ensuring good care and storage and coordinating purchasing, maintenance and replacement of all farm equipment."},
   {name:"Ruth Beremauro",role:"HR",bio:"Human Resource Manager - Responsible for coordinating all staff(KRC officers and farm employees), team building, role assigning, facilitating training and conflict resolution. Responsible for reinforcing KRC vision, team motivation and attending to individual human resource concerns."},
   {name:"Kasonde Makangila",role:"Senior Lead Supervisor",bio:"Biography to be added."},
+  {name:"Betty-Ryan Makangila",role:"Meeting Coordinator & Record Keeper",bio:"Meeting Coordinator & Record Keeper - Responsible for scheduling and announcement of meetings, writing and sharing of minutes and coordinating weekly KRC meetings. Also responsible for keeping records of transactions and receipts for KRC-related expenses and purchases."},
   {name:"Your Name",role:"Lead Systems Architect & Digital Project Director",bio:"Biography to be added."}
 ];
 const CREW = [
@@ -395,6 +434,34 @@ staffBox.addEventListener("change", async e => {
     if (row && l === "execs") row.open = true;
   } catch (err) { alert(err.message); }
 });
+// ---- Step 1.0: lightbox and fade-in ----
+const lb = document.getElementById("lb"), lbImg = lb.querySelector("img");
+let lbList = [], lbPos = 0;
+const lbShow = () => { lbImg.src = lbList[lbPos]; lb.hidden = false; lb.querySelectorAll(".nav").forEach(b => b.style.visibility = lbList.length > 1 ? "visible" : "hidden"); };
+document.addEventListener("click", e => {
+  const img = e.target.closest(".imgs img, .portrait img");
+  if (img) {
+    const box = img.closest(".imgs");
+    lbList = box ? [...box.querySelectorAll("img")].map(i => i.src) : [img.src];
+    lbPos = Math.max(0, lbList.indexOf(img.src)); lbShow(); return;
+  }
+  if (e.target.id === "lbx" || e.target === lb) lb.hidden = true;
+  if (e.target.id === "lbp") { lbPos = (lbPos - 1 + lbList.length) % lbList.length; lbShow(); }
+  if (e.target.id === "lbn") { lbPos = (lbPos + 1) % lbList.length; lbShow(); }
+});
+let tx = 0;
+lb.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", e => {
+  const d = e.changedTouches[0].clientX - tx;
+  if (Math.abs(d) > 50 && lbList.length > 1) { lbPos = (lbPos + (d < 0 ? 1 : -1) + lbList.length) % lbList.length; lbShow(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") lb.hidden = true; });
+const fadeEls = document.querySelectorAll("main section, .hero > *");
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), {threshold:.08});
+  fadeEls.forEach(el => { el.classList.add("fade"); io.observe(el); });
+}
+document.querySelectorAll(".cta, .cue").forEach(a => a.addEventListener("click", e => { if (editing) e.preventDefault(); }));
 </script>
 </body>
 </html>
