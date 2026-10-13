@@ -142,6 +142,9 @@ details.card[open]::details-content { block-size:auto; }
 .crew li .who { align-items:center; }
 .crew li .adm { text-align:left; }
 @media (min-width:700px) { .crew { grid-template-columns:repeat(3,1fr); } }
+.crew li.big { grid-column:1 / -1; }
+.crew li.big .portrait { max-width:240px; margin:6px auto 12px; aspect-ratio:4/5; font-size:2.2rem; }
+.crew li.big .who b { font-size:1.1rem; }
 @media (prefers-reduced-motion:reduce) { details.card::details-content { transition:none; } }
 </style>
 </head>
@@ -351,7 +354,7 @@ function renderStaff() {
     <input data-l="${l}" data-i="${i}" data-f="name" placeholder="Name" value="${esc(p.name)}">
     <input data-l="${l}" data-i="${i}" data-f="role" placeholder="Role" value="${esc(p.role)}">
     ${bio ? `<textarea data-l="${l}" data-i="${i}" data-f="bio" rows="4" placeholder="Biography">${esc(p.bio || "")}</textarea>` : ""}
-    <label>${l === "execs" ? "Portrait (full-quality JPEG)" : "Photo"}<input type="file" accept="image/jpeg,image/png" data-pl="${l}" data-port="${i}"></label>
+    <label>${(l === "execs" || /transporter/i.test(p.role)) ? "Portrait (full-quality JPEG)" : "Photo"}<input type="file" accept="image/jpeg,image/png" data-pl="${l}" data-port="${i}"></label>
     <button data-dl="${l}" data-di="${i}">Remove</button></div>`;
   document.getElementById("staff").innerHTML = `
     <div class="jump">${execs.map((p, i) => `<button data-jump="${i}" title="${esc(p.name)}">${esc(ini(p.name))}</button>`).join("")}</div>
@@ -361,7 +364,7 @@ function renderStaff() {
     <div class="adm"><button data-addl="execs">+ Add executive</button></div>
     <h3>Field Operations &amp; Farm Crew</h3>
     <h4 class="sub">Transport</h4>
-    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => /transporter/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => /transporter/i.test(o.p.role)).map(({p, i}) => `<li class="big"><span class="num">${i + 1}</span><div class="portrait">${p.photo ? `<img src="${p.photo}" loading="lazy" alt="">` : p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</div><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <h4 class="sub">Field Workers</h4>
     <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => !/transporter/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <div class="adm"><button data-addl="crew">+ Add crew member</button></div>`;
@@ -476,7 +479,7 @@ staffBox.addEventListener("change", async e => {
   if (/hei[cf]/i.test(f.type + f.name)) { alert("HEIC photos must be converted to JPEG first."); t.value = ""; return; }
   try {
     const thumb = await toJpeg(f, 256, 0.85), id = rid(), p = staffLists()[l][i];
-    if (l === "execs") p.photo = await upload("portraits/" + id + (f.type === "image/png" ? ".png" : ".jpg"), f, f.type || "image/jpeg");
+    if (l === "execs" || /transporter/i.test(p.role)) p.photo = await upload("portraits/" + id + (f.type === "image/png" ? ".png" : ".jpg"), f, f.type || "image/jpeg");
     p.thumb = await upload("portraits/" + id + "-thumb.jpg", thumb, "image/jpeg");
     saveDraft(); renderStaff();
     const row = staffBox.querySelectorAll(l === "execs" ? "details.card" : ".crew li")[i];
