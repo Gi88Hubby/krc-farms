@@ -360,10 +360,10 @@ function renderStaff() {
       <div class="body"><div class="portrait">${p.photo ? `<img src="${p.photo}" loading="lazy" alt="">` : esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
     <div class="adm"><button data-addl="execs">+ Add executive</button></div>
     <h3>Field Operations &amp; Farm Crew</h3>
-    <h4 class="sub">Transport &amp; Care</h4>
-    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => /transporter|caretaker/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <h4 class="sub">Transport</h4>
+    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => /transporter/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <h4 class="sub">Field Workers</h4>
-    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => !/transporter|caretaker/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => !/transporter/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <div class="adm"><button data-addl="crew">+ Add crew member</button></div>`;
 }
 const staffBox = document.getElementById("staff");
