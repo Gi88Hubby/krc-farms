@@ -131,6 +131,18 @@ html { scroll-padding-top:80px; }
 @keyframes ripple { to { transform:scale(1); opacity:0; } }
 .card > summary, .crew li { position:relative; }
 @media (prefers-reduced-motion:reduce) { .ripple { display:none; } }
+/* Step 1.2: smooth expanding cards and two-column crew tiles */
+:root { interpolate-size:allow-keywords; }
+details.card::details-content { block-size:0; overflow:hidden; transition:block-size .4s ease, content-visibility .4s allow-discrete; }
+details.card[open]::details-content { block-size:auto; }
+.crew { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.crew li { position:relative; flex-direction:column; align-items:center; text-align:center; padding:26px 8px 14px; border:1px solid rgba(43,58,36,.15); border-radius:14px; background:rgba(43,58,36,.06); }
+.crew li .num { position:absolute; top:8px; left:10px; }
+.crew li .av.sm { width:58px; height:58px; font-size:1.05rem; }
+.crew li .who { align-items:center; }
+.crew li .adm { text-align:left; }
+@media (min-width:700px) { .crew { grid-template-columns:repeat(3,1fr); } }
+@media (prefers-reduced-motion:reduce) { details.card::details-content { transition:none; } }
 </style>
 </head>
 <body>
