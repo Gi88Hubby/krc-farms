@@ -31,6 +31,7 @@ nav a:hover { opacity:1; text-decoration:underline; }
 .hero p { margin-top:16px; max-width:34em; font-size:1.1rem; opacity:.92; }
 main { background:rgba(34,46,29,.86); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); color:var(--sand); min-height:50vh; padding:40px 20px; border-radius:24px 24px 0 0; }
 main section { max-width:900px; margin:0 auto 28px; padding:32px 24px; border-radius:16px; background:var(--panel); color:var(--sand); }
+#team { background-image:repeating-linear-gradient(90deg, rgba(43,58,36,.035) 0 1px, transparent 1px 4px), repeating-linear-gradient(0deg, rgba(43,58,36,.03) 0 1px, transparent 1px 4px) !important; }
 main section:nth-of-type(even) { background:var(--beige); color:var(--moss); }
 main h2 { font-size:1.6rem; margin-bottom:8px; }
 .editing [data-key] { outline:1px dashed #9bbf6a; outline-offset:3px; }
@@ -61,7 +62,7 @@ summary { cursor:pointer; list-style-position:inside; }
 .card > summary::after { content:"\25BE"; margin-left:auto; }
 .card[open] > summary::after { content:"\25B4"; }
 .card .body { padding:0 12px 14px; }
-.av { flex:none; width:44px; height:44px; border-radius:50%; background:var(--moss); color:var(--sand); display:inline-flex; align-items:center; justify-content:center; font-weight:bold; }
+.av { flex:none; width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#4a5e3a,#2B3A24 60%,#1d2818); color:var(--sand); box-shadow:inset 0 0 0 2px rgba(237,230,211,.55), 0 3px 8px rgba(0,0,0,.18); display:inline-flex; align-items:center; justify-content:center; font-weight:bold; }
 .av.sm { width:32px; height:32px; font-size:.8rem; }
 .who { display:flex; flex-direction:column; }
 .who small { opacity:.75; }
@@ -70,6 +71,8 @@ summary { cursor:pointer; list-style-position:inside; }
 .crew { list-style:none; padding:0; }
 .crew li { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(43,58,36,.15); }
 .crew .adm { width:100%; }
+.sub { margin:14px 0 4px; font-size:.95rem; opacity:.85; font-weight:bold; text-transform:uppercase; letter-spacing:.08em; }
+.num { flex:none; width:24px; height:24px; border-radius:50%; background:rgba(43,58,36,.12); font-size:.75rem; display:inline-flex; align-items:center; justify-content:center; font-weight:bold; }
 #team .adm input, #team .adm textarea { background:rgba(255,255,255,.55); }
 .portrait img, .av img { width:100%; height:100%; object-fit:cover; display:block; }
 .av { overflow:hidden; }
@@ -103,7 +106,31 @@ details[open] > :not(summary) { animation:drop .3s ease; }
 .bg video.on { opacity:1; }
 @keyframes kb { from { transform:scale(1); } to { transform:scale(1.09); } }
 main h2::after { content:""; display:block; width:48px; height:3px; background:#9bbf6a; margin-top:8px; border-radius:3px; }
+@media (min-width:700px) { .card[open] > .body { display:grid; grid-template-columns:260px 1fr; gap:20px; align-items:start; } .card[open] > .body .portrait { margin:0; max-width:none; } }
 @media (prefers-reduced-motion:reduce) { .cue, .bg, .bg video { animation:none; } }
+.card { transition:transform .25s ease, box-shadow .25s ease; border-radius:16px; }
+.card:hover, .card:active { transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.18); }
+.card[open] { transform:none; }
+.card[open] > .body .portrait { animation:pop .45s ease; }
+@keyframes pop { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:none; } }
+.rb { display:inline-block; margin-top:4px; padding:2px 10px; border-radius:999px; font-size:.74rem; letter-spacing:.04em; background:#9bbf6a; color:#1d2918; font-weight:bold; }
+#staff > h3 { display:flex; align-items:center; gap:12px; margin:26px 0 10px; }
+#staff > h3::after { content:""; flex:1; height:1px; background:rgba(43,58,36,.35); }
+.card:hover .portrait { transform:scale(1.03); }
+.portrait { transition:transform .5s ease; border:3px solid #EDE6D3; box-shadow:0 10px 26px rgba(0,0,0,.28), 0 0 0 1px rgba(43,58,36,.25); }
+.card .who small.r { display:block; }
+.hint { display:block; margin-top:4px; font-size:.78rem; opacity:.7; font-style:italic; }
+.card[open] .hint { display:none; }
+.welcome { font-style:italic; font-size:1.05rem; margin:-6px 0 14px; opacity:.9; }
+.jump { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 8px; }
+.jump button { width:42px; height:42px; border-radius:50%; border:1px solid #9bbf6a; background:var(--moss); color:var(--sand); font:inherit; font-weight:bold; cursor:pointer; transition:transform .2s ease, background .2s ease; }
+.jump button:hover, .jump button:active { transform:translateY(-2px); background:#3d5232; }
+html { scroll-padding-top:80px; }
+.rip { position:relative; overflow:hidden; }
+.ripple { position:absolute; border-radius:50%; background:radial-gradient(circle, rgba(155,191,106,.45) 0%, rgba(155,191,106,0) 70%); transform:scale(0); opacity:.9; pointer-events:none; animation:ripple .6s ease-out forwards; }
+@keyframes ripple { to { transform:scale(1); opacity:0; } }
+.card > summary, .crew li { position:relative; }
+@media (prefers-reduced-motion:reduce) { .ripple { display:none; } }
 </style>
 </head>
 <body>
@@ -140,7 +167,7 @@ main h2::after { content:""; display:block; width:48px; height:3px; background:#
     <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
     <button id="signin">Sign in</button> <button id="signout">Sign out</button></div></div>
   <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
-  <section id="team"><h2 data-key="h-team">Our Team</h2><div id="staff"></div></section>
+  <section id="team"><h2 data-key="h-team">Our Team</h2><p class="welcome" data-key="team-welcome">The people who make KRC Farms work.</p><div id="staff"></div></section>
   <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
 </main>
 
@@ -315,12 +342,16 @@ function renderStaff() {
     <label>${l === "execs" ? "Portrait (full-quality JPEG)" : "Photo"}<input type="file" accept="image/jpeg,image/png" data-pl="${l}" data-port="${i}"></label>
     <button data-dl="${l}" data-di="${i}">Remove</button></div>`;
   document.getElementById("staff").innerHTML = `
+    <div class="jump">${execs.map((p, i) => `<button data-jump="${i}" title="${esc(p.name)}">${esc(ini(p.name))}</button>`).join("")}</div>
     <h3>Executive Management</h3>
-    ${execs.map((p, i) => `<details class="card" name="exec"><summary><span class="av">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span></summary>
+    ${execs.map((p, i) => `<details class="card" name="exec" id="ex-${i}"><summary><span class="av">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><span class="rb r">${esc(p.role)}</span><small class="hint">Tap to read more</small></span></summary>
       <div class="body"><div class="portrait">${p.photo ? `<img src="${p.photo}" loading="lazy" alt="">` : esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
     <div class="adm"><button data-addl="execs">+ Add executive</button></div>
     <h3>Field Operations &amp; Farm Crew</h3>
-    <ul class="crew">${crew.map((p, i) => `<li><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <h4 class="sub">Transport &amp; Care</h4>
+    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => /transporter|caretaker/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
+    <h4 class="sub">Field Workers</h4>
+    <ul class="crew">${crew.map((p, i) => ({p, i})).filter(o => !/transporter|caretaker/i.test(o.p.role)).map(({p, i}) => `<li><span class="num">${i + 1}</span><span class="av sm">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><small class="r">${esc(p.role)}</small></span>${form("crew", i, p, false)}</li>`).join("")}</ul>
     <div class="adm"><button data-addl="crew">+ Add crew member</button></div>`;
 }
 const staffBox = document.getElementById("staff");
@@ -337,6 +368,12 @@ staffBox.addEventListener("input", e => {
   saveDraft();
 });
 staffBox.addEventListener("click", e => {
+  const jump = e.target.dataset.jump;
+  if (jump !== undefined) {
+    const card = document.getElementById("ex-" + jump);
+    if (card) { card.open = true; card.scrollIntoView({behavior:"smooth", block:"start"}); }
+    return;
+  }
   const add = e.target.dataset.addl, dl = e.target.dataset.dl;
   if (add) {
     staffLists()[add].push(add === "execs" ? {name:"New member",role:"",bio:""} : {name:"New member",role:""});
@@ -449,6 +486,17 @@ document.addEventListener("click", e => {
   if (e.target.id === "lbp") { lbPos = (lbPos - 1 + lbList.length) % lbList.length; lbShow(); }
   if (e.target.id === "lbn") { lbPos = (lbPos + 1) % lbList.length; lbShow(); }
 });
+document.getElementById("staff").addEventListener("pointerdown", e => {
+  const row = e.target.closest("details.card > summary, .crew li");
+  if (!row || e.target.closest("input, textarea, button, label")) return;
+  const r = row.getBoundingClientRect(), d = Math.max(r.width, r.height) * 1.6;
+  const ring = document.createElement("span");
+  ring.className = "ripple";
+  ring.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px;`;
+  row.classList.add("rip");
+  row.appendChild(ring);
+  setTimeout(() => ring.remove(), 650);
+});
 let tx = 0;
 lb.addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, {passive:true});
 lb.addEventListener("touchend", e => {
@@ -460,6 +508,10 @@ const fadeEls = document.querySelectorAll("main section, .hero > *");
 if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), {threshold:.08});
   fadeEls.forEach(el => { el.classList.add("fade"); io.observe(el); });
+  const cardIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); cardIO.unobserve(en.target); } }), {threshold:.15});
+  const addCards = () => document.querySelectorAll("#staff .card, #staff .crew li").forEach(c => { if (!c.classList.contains("fade")) { c.classList.add("fade"); cardIO.observe(c); } });
+  const stagger = () => document.querySelectorAll("#staff .crew li").forEach((c, n) => c.style.transitionDelay = (n % 6) * 0.08 + "s");
+  addCards(); stagger(); new MutationObserver(() => { addCards(); stagger(); }).observe(document.getElementById("staff"), {childList:true, subtree:true});
 }
 document.querySelectorAll(".cta, .cue").forEach(a => a.addEventListener("click", e => { if (editing) e.preventDefault(); }));
 </script>
