@@ -155,6 +155,18 @@ details.card[open]::details-content { block-size:auto; }
 .wa.alt { background:#1f6b3b; }
 .wa.dark { background:var(--moss); }
 @media (max-width:420px) { .stats { grid-template-columns:1fr; } }
+/* Step 1.4: team search and shared-role badge */
+.tsearch { width:100%; padding:11px 16px; margin:8px 0 4px; border-radius:999px; border:1px solid #9bbf6a; background:rgba(255,255,255,.55); color:var(--moss); font:inherit; }
+.rb2 { display:inline-block; margin:4px 0 0 6px; padding:2px 10px; border-radius:999px; font-size:.74rem; font-weight:bold; background:var(--moss); color:var(--sand); }
+/* Step 1.5: minutes archive */
+.year { margin-top:10px; border-radius:14px; background:rgba(43,58,36,.08); padding:4px 14px; }
+.year > summary { padding:12px 0; font-weight:bold; font-size:1.1rem; }
+.year > summary small { font-weight:normal; opacity:.7; }
+.mlist { list-style:none; padding:0 0 10px; }
+.mlist li { padding:10px 0; border-top:1px solid rgba(43,58,36,.15); }
+.mlist li a { color:var(--moss); font-weight:bold; }
+.mdate { display:block; font-size:.85rem; opacity:.75; }
+.mlist .adm input { width:100%; margin-top:6px; padding:8px; border-radius:8px; border:1px solid #9bbf6a; background:rgba(255,255,255,.55); font:inherit; }
 </style>
 </head>
 <body>
@@ -198,10 +210,11 @@ details.card[open]::details-content { block-size:auto; }
     <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
     <button id="signin">Sign in</button> <button id="signout">Sign out</button></div></div>
   <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
-  <section id="team"><h2 data-key="h-team">Our Team</h2><p class="welcome" data-key="team-welcome">The people who make KRC Farms work.</p><div id="staff"></div></section>
+  <section id="team"><h2 data-key="h-team">Our Team</h2><p class="welcome" data-key="team-welcome">The people who make KRC Farms work.</p><input id="tsearch" class="tsearch" type="search" placeholder="Search the team by name or role">
+    <div id="staff"></div></section>
   <section id="minutes"><h2 data-key="h-minutes">Meeting minutes</h2>
-    <p data-key="minutes-text">Latest KRC meeting minutes, 24 August 2026.</p>
-    <a class="wa dark" href="KRC-Minutes-24-08-2026.pdf" target="_blank" rel="noopener">Open minutes (PDF)</a>
+    <p data-key="minutes-text">The KRC meeting archive, sorted by date.</p>
+    <div id="minutesList"></div>
   </section>
   <section id="contact"><h2 data-key="h-contact">Contact</h2>
     <p data-key="contact-text">Order fresh produce or get in touch.</p>
@@ -238,7 +251,8 @@ fetch("content.json", { cache: "no-store" })
     if (Array.isArray(content.milestones)) milestones = content.milestones;
     if (Array.isArray(content.execs)) execs = content.execs;
     if (Array.isArray(content.crew)) crew = content.crew;
-    renderTimeline(); renderStaff();
+    if (Array.isArray(content.minutes)) minutes = content.minutes;
+    renderTimeline(); renderStaff(); renderMinutes();
   });
 if (isAdmin) {
   document.getElementById("adminToggle").hidden = false;
@@ -249,7 +263,7 @@ fields.forEach(el => el.addEventListener("input", () => {
   try { localStorage.setItem("krc-draft", JSON.stringify(content)); } catch (e) {}
 }));
 document.getElementById("export").addEventListener("click", () => {
-  content.milestones = milestones; content.execs = execs; content.crew = crew;
+  content.milestones = milestones; content.execs = execs; content.crew = crew; content.minutes = minutes;
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(content, null, 2)], { type: "application/json" }));
   a.download = "content.json";
@@ -296,7 +310,7 @@ const MILESTONES = [
 let milestones = MILESTONES;
 const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function saveDraft() {
-  content.milestones = milestones; content.execs = execs; content.crew = crew;
+  content.milestones = milestones; content.execs = execs; content.crew = crew; content.minutes = minutes;
   try { localStorage.setItem("krc-draft", JSON.stringify(content)); } catch (e) {}
 }
 function renderTimeline(openMonths, openMs) {
@@ -373,6 +387,13 @@ const CREW = [
 let execs = EXECS, crew = CREW;
 const ini = n => n.split(/\s+/).filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase() || "?";
 const staffLists = () => ({execs, crew});
+const SHARED = {"Dillon Nyimbili": 2};
+let staffQuery = "";
+function applyFilter() {
+  document.querySelectorAll("#staff details.card, #staff .crew li").forEach(el => {
+    el.hidden = !!staffQuery && !el.textContent.toLowerCase().includes(staffQuery);
+  });
+}
 function renderStaff() {
   const form = (l, i, p, bio) => `<div class="adm">
     <input data-l="${l}" data-i="${i}" data-f="name" placeholder="Name" value="${esc(p.name)}">
@@ -383,7 +404,7 @@ function renderStaff() {
   document.getElementById("staff").innerHTML = `
     <div class="jump">${execs.map((p, i) => `<button data-jump="${i}" title="${esc(p.name)}">${esc(ini(p.name))}</button>`).join("")}</div>
     <h3>Executive Management</h3>
-    ${execs.map((p, i) => `<details class="card" name="exec" id="ex-${i}"><summary><span class="av">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><span class="rb r">${esc(p.role)}</span><small class="hint">Tap to read more</small></span></summary>
+    ${execs.map((p, i) => `<details class="card" name="exec" id="ex-${i}"><summary><span class="av">${p.thumb ? `<img src="${p.thumb}" alt="">` : esc(ini(p.name))}</span><span class="who"><b class="n">${esc(p.name)}</b><span class="rb r">${esc(p.role)}</span>${SHARED[p.name] ? `<span class="rb2">${SHARED[p.name]} roles</span>` : ""}<small class="hint">Tap to read more</small></span></summary>
       <div class="body"><div class="portrait">${p.photo ? `<img src="${p.photo}" loading="lazy" alt="">` : esc(ini(p.name))}</div><p class="bio">${esc(p.bio || "")}</p>${form("execs", i, p, true)}</div></details>`).join("")}
     <div class="adm"><button data-addl="execs">+ Add executive</button></div>
     <h3>Field Operations &amp; Farm Crew</h3>
@@ -550,9 +571,55 @@ if ("IntersectionObserver" in window) {
   const cardIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); cardIO.unobserve(en.target); } }), {threshold:.15});
   const addCards = () => document.querySelectorAll("#staff .card, #staff .crew li").forEach(c => { if (!c.classList.contains("fade")) { c.classList.add("fade"); cardIO.observe(c); } });
   const stagger = () => document.querySelectorAll("#staff .crew li").forEach((c, n) => c.style.transitionDelay = (n % 6) * 0.08 + "s");
-  addCards(); stagger(); new MutationObserver(() => { addCards(); stagger(); }).observe(document.getElementById("staff"), {childList:true, subtree:true});
+  addCards(); stagger(); new MutationObserver(() => { addCards(); stagger(); applyFilter(); }).observe(document.getElementById("staff"), {childList:true, subtree:true});
 }
 document.querySelectorAll(".cta, .cue").forEach(a => a.addEventListener("click", e => { if (editing) e.preventDefault(); }));
+document.getElementById("tsearch").addEventListener("input", e => { staffQuery = e.target.value.trim().toLowerCase(); applyFilter(); });
+// ---- Step 1.5: minutes archive (sorted oldest to newest, grouped by year) ----
+let minutes = [{date:"2026-08-24", title:"KRC Meeting", file:"KRC-Minutes-24-08-2026.pdf"}];
+const fmtDate = d => { const x = new Date(d + "T00:00"); return isNaN(x) ? (d || "No date") : x.toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"}); };
+function renderMinutes() {
+  const box = document.getElementById("minutesList");
+  const admin = !!document.getElementById("edit") && document.body.classList.contains("editing");
+  const rows = minutes.map((m, i) => ({m, i})).sort((a, b) => (a.m.date || "").localeCompare(b.m.date || ""));
+  const years = {};
+  rows.forEach(r => { const y = (r.m.date || "").slice(0, 4) || "Undated"; (years[y] = years[y] || []).push(r); });
+  const yearKeys = Object.keys(years);
+  box.innerHTML = yearKeys.map((y, n) => `
+    <details class="year" ${n === yearKeys.length - 1 ? "open" : ""}><summary>${esc(y)} <small>(${years[y].length})</small></summary>
+      <ul class="mlist">${years[y].map(({m, i}) => `
+        <li>
+          <span class="mdate">${esc(fmtDate(m.date))}</span>
+          ${m.file ? `<a href="${esc(m.file)}" target="_blank" rel="noopener">${esc(m.title || "Meeting minutes")} (PDF)</a>` : `<span class="none">${esc(m.title || "Meeting minutes")} (no file yet)</span>`}
+          <div class="adm">
+            <input type="date" data-mi="${i}" data-mf="date" value="${esc(m.date || "")}">
+            <input data-mi="${i}" data-mf="title" placeholder="Title" value="${esc(m.title || "")}">
+            <input data-mi="${i}" data-mf="file" placeholder="File name, e.g. KRC-Minutes-24-08-2026.pdf" value="${esc(m.file || "")}">
+            <button data-mdel="${i}">Remove</button>
+          </div>
+        </li>`).join("")}</ul>
+    </details>`).join("") + `<div class="adm"><button data-madd="1">+ Add minutes</button></div>`;
+}
+document.getElementById("minutesList").addEventListener("input", e => {
+  const t = e.target, i = t.dataset.mi;
+  if (i === undefined) return;
+  minutes[i][t.dataset.mf] = t.value;
+  saveDraft();
+});
+document.getElementById("minutesList").addEventListener("change", e => {
+  if (e.target.dataset.mi !== undefined && e.target.dataset.mf === "date") { minutes[e.target.dataset.mi].date = e.target.value; saveDraft(); renderMinutes(); }
+});
+document.getElementById("minutesList").addEventListener("click", e => {
+  if (e.target.dataset.madd) {
+    minutes.push({date:new Date().toISOString().slice(0, 10), title:"KRC Meeting", file:""});
+    saveDraft(); renderMinutes();
+  } else if (e.target.dataset.mdel !== undefined) {
+    if (!confirm("Remove these minutes from the archive?")) return;
+    minutes.splice(+e.target.dataset.mdel, 1);
+    saveDraft(); renderMinutes();
+  }
+});
+renderMinutes();
 </script>
 </body>
 </html>
