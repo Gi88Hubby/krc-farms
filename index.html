@@ -146,6 +146,15 @@ details.card[open]::details-content { block-size:auto; }
 .crew li.big .portrait { max-width:240px; margin:6px auto 12px; aspect-ratio:4/5; font-size:2.2rem; }
 .crew li.big .who b { font-size:1.1rem; }
 @media (prefers-reduced-motion:reduce) { details.card::details-content { transition:none; } }
+/* Step 1.3: stats, WhatsApp and minutes */
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; text-align:center; margin-top:12px; }
+.stat { background:rgba(43,58,36,.08); border-radius:14px; padding:18px 6px; }
+.stat b { display:block; font-family:Georgia,"Times New Roman",serif; font-size:2rem; color:var(--moss); }
+.stat span { font-size:.85rem; }
+.wa { display:inline-block; margin:10px 10px 0 0; padding:12px 22px; border-radius:999px; background:#25D366; color:#fff; font-weight:bold; text-decoration:none; }
+.wa.alt { background:#1f6b3b; }
+.wa.dark { background:var(--moss); }
+@media (max-width:420px) { .stats { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -177,13 +186,28 @@ details.card[open]::details-content { block-size:auto; }
 </div>
 
 <main id="content">
+  <section id="glance"><h2 data-key="h-glance">Farm at a glance</h2>
+    <div class="stats">
+      <div class="stat"><b data-key="stat1-n">7</b><span data-key="stat1-l">Months active</span></div>
+      <div class="stat"><b data-key="stat2-n">TBD</b><span data-key="stat2-l">Beds planted</span></div>
+      <div class="stat"><b data-key="stat3-n">TBD</b><span data-key="stat3-l">Crops growing</span></div>
+    </div>
+  </section>
   <div id="auth" class="adm"><div class="box"><b>Admin login</b><span id="authState"></span>
     <input id="em" type="email" placeholder="Admin email" autocomplete="username">
     <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
     <button id="signin">Sign in</button> <button id="signout">Sign out</button></div></div>
   <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
   <section id="team"><h2 data-key="h-team">Our Team</h2><p class="welcome" data-key="team-welcome">The people who make KRC Farms work.</p><div id="staff"></div></section>
-  <section id="contact"><h2 data-key="h-contact">Contact</h2><p>Details to be added.</p></section>
+  <section id="minutes"><h2 data-key="h-minutes">Meeting minutes</h2>
+    <p data-key="minutes-text">Latest KRC meeting minutes, 24 August 2026.</p>
+    <a class="wa dark" href="KRC-Minutes-24-08-2026.pdf" target="_blank" rel="noopener">Open minutes (PDF)</a>
+  </section>
+  <section id="contact"><h2 data-key="h-contact">Contact</h2>
+    <p data-key="contact-text">Order fresh produce or get in touch.</p>
+    <a class="wa" href="https://wa.me/260977490470">WhatsApp +260 97 749 0470</a>
+    <a class="wa alt" href="https://wa.me/260973588733">WhatsApp +260 97 358 8733</a>
+  </section>
 </main>
 
 <div id="lb" hidden><button id="lbx">&times;</button><button id="lbp" class="nav">&#10094;</button><img alt=""><button id="lbn" class="nav">&#10095;</button></div>
