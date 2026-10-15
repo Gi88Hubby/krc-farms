@@ -209,7 +209,9 @@ details.card[open]::details-content { block-size:auto; }
     <input id="em" type="email" placeholder="Admin email" autocomplete="username">
     <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
     <button id="signin">Sign in</button> <button id="signout">Sign out</button></div></div>
-  <section id="timeline"><h2 data-key="h-timeline">Timeline</h2><div id="months"></div></section>
+  <section id="timeline"><h2 data-key="h-timeline">Timeline</h2>
+    <input id="gsearch" class="tsearch" type="search" placeholder="Search timeline and minutes, e.g. irrigation">
+    <div id="months"></div></section>
   <section id="team"><h2 data-key="h-team">Our Team</h2><p class="welcome" data-key="team-welcome">The people who make KRC Farms work.</p><input id="tsearch" class="tsearch" type="search" placeholder="Search the team by name or role">
     <div id="staff"></div></section>
   <section id="minutes"><h2 data-key="h-minutes">Meeting minutes</h2>
@@ -620,6 +622,35 @@ document.getElementById("minutesList").addEventListener("click", e => {
   }
 });
 renderMinutes();
+// ---- Step 1.6: keyword search across timeline events and minutes ----
+let timeQuery = "";
+function applyTimeFilter() {
+  const q = timeQuery;
+  document.querySelectorAll("#months details.month").forEach(mo => {
+    const monthHit = !!q && mo.querySelector(":scope > summary").textContent.toLowerCase().includes(q);
+    let any = false;
+    mo.querySelectorAll(":scope > details.ms").forEach(ms => {
+      const hit = !q || monthHit || ms.textContent.toLowerCase().includes(q);
+      ms.hidden = !hit;
+      if (hit) any = true;
+    });
+    mo.hidden = !!q && !any;
+    if (q && any) mo.open = true;
+  });
+  document.querySelectorAll("#minutesList details.year").forEach(y => {
+    let any = false;
+    y.querySelectorAll(".mlist li").forEach(li => {
+      const hit = !q || li.textContent.toLowerCase().includes(q);
+      li.hidden = !hit;
+      if (hit) any = true;
+    });
+    y.hidden = !!q && !any;
+    if (q && any) y.open = true;
+  });
+}
+document.getElementById("gsearch").addEventListener("input", e => { timeQuery = e.target.value.trim().toLowerCase(); applyTimeFilter(); });
+new MutationObserver(applyTimeFilter).observe(document.getElementById("months"), {childList:true});
+new MutationObserver(applyTimeFilter).observe(document.getElementById("minutesList"), {childList:true});
 </script>
 </body>
 </html>
