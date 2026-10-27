@@ -3,8 +3,8 @@
     {
       "month": "feb",
       "date": "",
-      "title": "Property acquired",
-      "text": "Official property acquisition and initial topographical survey walk.",
+      "title": "Team's first Property Survey ",
+      "text": "Official property initial topographical survey amd hike walk.",
       "images": [
         "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791828474150-i9o29.jpg"
       ]
@@ -156,7 +156,7 @@
     {
       "month": "feb",
       "date": "",
-      "title": "New event",
+      "title": "Land demarcation ",
       "text": "",
       "images": [
         "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/timeline/1791826953647-g8o1w.jpg"
@@ -207,7 +207,7 @@
     {
       "name": "Dillon Nyimbili",
       "role": "General Administration & Water",
-      "bio": "General Administrator - Responsible for overall coordination of farm trips - budget coordination, overseeing all farm departments.\n\nWater supply manager - Responsible for coordinating water usage and storage, irrigation system installation and maintenance and training of the whole team on appropriate usage and management of water facilities.",
+      "bio": "General Administrator - Responsible for overall coordination of farm trips - budget coordination, overseeing all farm departments.\n\nWater supply management -\nResponsible for coordinating water usage and storage, irrigation system installation and maintenance and training of the whole team on appropriate usage and management of water facilities.",
       "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823607113-8lp30.jpg",
       "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823607113-8lp30-thumb.jpg"
     },
@@ -234,7 +234,7 @@
     },
     {
       "name": "Ruth Beremauro",
-      "role": "HR",
+      "role": "Human Relations",
       "bio": "Human Resource Manager - Responsible for coordinating all staff(KRC officers and farm employees), team building, role assigning, facilitating training and conflict resolution. Responsible for reinforcing KRC vision, team motivation and attending to individual human resource concerns.",
       "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823915358-5ekaj.jpg",
       "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791823915358-5ekaj-thumb.jpg"
@@ -249,7 +249,7 @@
     {
       "name": "Gibstar Makangila jr. ",
       "role": "Lead Systems Architect & Digital Project Director",
-      "bio": ".Responsible for planning, building and maintaining KRC Farms' digital systems,  including extensive sustainable research\n the farm website and repository, its records, chronological timeline and photo storage,.  Ensures that information is organised, fact-based fact-checked vetted, secure and easy for the whole team to access.",
+      "bio": "Responsible for planning, building and maintaining KRC Farms' digital systems,  including extensive sustainable research\n,farm website and repository, record chronological timeline and photo storage, Ensures that information is organised, fact-based fact-checked vetted, secure and easy for the whole team to access in perpetuity.",
       "photo": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791829750159-d7ypk.jpg",
       "thumb": "https://niboqoycmrhrtdoldgdr.supabase.co/storage/v1/object/public/farm-photos/portraits/1791829750159-d7ypk-thumb.jpg"
     },
@@ -296,5 +296,32 @@
       "role": "Field Worker"
     }
   ],
-  "h-contact": "Contact : KRC Administration +260 97 3588733+260 97 7490470"
+  "h-contact": "Contact : KRC Administration +260 97 3588733+260 97 7490470",
+  "minutes": [
+    {
+      "date": "2026-08-24",
+      "title": "KRC Meeting",
+      "file": "KRC-Minutes-24-08-2026.pdf"
+    },
+    {
+      "date": "2026-08-27",
+      "title": "KRC Meeting",
+      "file": "27-08-2026 KRC Meeting Minutes"
+    },
+    {
+      "date": "2026-03-04",
+      "title": "KRC Meeting",
+      "file": "KRC Minutes 04-03-2026"
+    },
+    {
+      "date": "2026-02-27",
+      "title": "KRC Meeting",
+      "file": "KRC Minutes 27-02-2026"
+    },
+    {
+      "date": "2026-09-17",
+      "title": "KRC Meeting",
+      "file": "17-09-2026 KRC Meeting Minutes"
+    }
+  ]
 }
